@@ -1,4 +1,5 @@
 from github import Github
+from pprint import pprint
 import pymongo
 
 # init github API
@@ -10,6 +11,7 @@ database = client["github_database"]
 
 # init language collection
 language_collection = database["languages"]
+language_collection.drop()
 
 # init userbase
 source = "RobbieJennings"
@@ -38,20 +40,19 @@ for user in users:
             total_size = repo.size
 
             for language in repo.get_languages():
-                old_entry = language_collection.find_one(language)
-
+                old_entry = language_collection.find_one({"name": language})
                 if(old_entry is not None):
-                    new_total_repos = old_entry.find(
+                    new_total_repos = old_entry.get(
                         "total_repos") + 1
-                    new_total_commits = old_entry.find(
+                    new_total_commits = old_entry.get(
                         "total_commits") + total_commits
-                    new_total_branches = old_entry.find(
+                    new_total_branches = old_entry.get(
                         "total_branches") + total_branches
-                    new_total_contributors = old_entry.find(
+                    new_total_contributors = old_entry.get(
                         "total_contributors") + total_contributors
-                    new_total_size = old_entry.find(
+                    new_total_size = old_entry.get(
                         "total_size") + total_size
-                    language_collection.delete_one(language)
+                    language_collection.delete_one({"name": language})
                 else:
                     new_total_repos = 1
                     new_total_commits = total_commits
@@ -78,4 +79,6 @@ for user in users:
 
                 language_collection.insert_one(new_entry)
 
-print("done")
+cursor = language_collection.find({})
+for document in cursor:
+    pprint(document)
