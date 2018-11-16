@@ -1,4 +1,5 @@
 import pymongo
+import sys
 
 # init MongoDB API
 client = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -54,3 +55,9 @@ def remove_user(username):
             language_collection.insert_one(new_entry)
 
     user_collection.drop()
+    return "successfully removed user"
+
+
+if __name__ == "__main__":
+    print(remove_user(sys.argv[1]))
+    sys.stdout.flush()

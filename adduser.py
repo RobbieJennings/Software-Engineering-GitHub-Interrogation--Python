@@ -2,6 +2,7 @@ import github
 import pymongo
 import addlanguage
 import removeuser
+import sys
 
 # init MongoDB API
 client = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -17,11 +18,11 @@ def insert_user(username):
         user = g.get_user(username)
     # catch connecection or unkown user exception
     except github.GithubException:
-        return
+        return "failed to add user"
 
     # add user to database
     if(username in database.list_collection_names()):
-        removeuser.remove_user(username)
+        print(removeuser.remove_user(username))
     else:
         database[username]
     for repo in user.get_repos():
@@ -38,3 +39,9 @@ def insert_user(username):
                 addlanguage.insert_language("language_collection", language,
                                             total_commits, total_branches,
                                             total_contributors, total_size)
+    return "successfully added user"
+
+
+if __name__ == "__main__":
+    print(insert_user(sys.argv[1]))
+    sys.stdout.flush()
