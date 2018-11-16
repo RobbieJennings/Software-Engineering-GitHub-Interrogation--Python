@@ -1,4 +1,4 @@
-from pprint import pprint
+import pprint
 import pymongo
 import initdb
 import removeuser
@@ -23,9 +23,9 @@ for collection in database.list_collection_names():
         print(collection)
         cursor = database[collection].find({})
         for document in cursor:
-            pprint(document)
+            pprint.pprint(document)
 
 print("language_collection")
 cursor = database["language_collection"].find({})
 for document in cursor:
-    pprint(document)
+    pprint.pprint(document)

@@ -1,8 +1,4 @@
-from github import Github
 import pymongo
-
-# init github API
-g = Github("4986e75bbfff142ff1550dcbca813ba0d6d872e3")
 
 # init MongoDB API
 client = pymongo.MongoClient("mongodb://localhost:27017/")
