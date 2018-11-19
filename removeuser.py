@@ -9,6 +9,8 @@ language_collection = database["languages"]
 
 # define method for removing users and their repos from database
 def remove_user(username):
+    if(username not in database.collection_names()):
+        return "unkown user"
     user_collection = database[username]
     language_collection = database["language_collection"]
     for entry in user_collection.find():
