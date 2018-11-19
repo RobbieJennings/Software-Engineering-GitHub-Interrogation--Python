@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<p>
+    User statistics
+<p>
+<p>
+    Add/update a user to the database:
+</p>
+<form action='/adduser'>
+  <input type="text" placeholder="Username.." name="username">
+  <input type="submit" value="submit">
+</form>
+<p>
+    Remove a user from the database:
+</p>
+<form action='/removeuser'>
+  <input type="text" placeholder="Username.." name="username">
+  <input type="submit" value="submit">
+</form>
+<p>
+    Reset the database and return home:
+</p>
+<form action='/'>
+  <input type="submit" value="reset">
+</form>
+</body>
+</html>

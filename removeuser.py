@@ -61,5 +61,5 @@ def remove_user(username):
 
 
 if __name__ == "__main__":
-    print(remove_user(sys.argv[1]))
+    sys.stdout.write(remove_user(sys.argv[1]))
     sys.stdout.flush()

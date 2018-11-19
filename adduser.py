@@ -43,5 +43,5 @@ def insert_user(username):
 
 
 if __name__ == "__main__":
-    print(insert_user(sys.argv[1]))
+    sys.stdout.write(insert_user(sys.argv[1]))
     sys.stdout.flush()
