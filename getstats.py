@@ -6,12 +6,12 @@ import sys
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 database = client["github_database"]
 language_collection = database["language_collection"]
-user_collection = None
 
 
 # define method for returning relevant statistics as JSON
 def get_statistics(username):
     stats = []
+    user_collection = None
 
     if(username is not None and username in database.collection_names()):
         user_collection = database[username]

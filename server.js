@@ -2,16 +2,6 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 const { spawn } = require("child_process");
-var MongoClient = require('mongodb').MongoClient;
-
-function getCollection(collection) {
-    MongoClient.connect("mongodb://localhost:27017/github_database",
-        { useNewUrlParser: true }, function (err, db) {
-         if(err) throw err;
-         var collection = db.collection(collection);
-         return collection.find().toArray()
-    });
-}
 
 app.get('/', function (req, res) {
     const pythonInitDB = spawn("python3",["initdb.py"]);
@@ -31,10 +21,16 @@ app.get('/adduser', function (req, res) {
     var pythonAddUser = spawn("python3",["adduser.py", username]);
     pythonAddUser.stdout.on('data', (data) => {
         console.log(data.toString());
-        fs.readFile('stats.html', function(err, data){
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(data);
-            return res.end();
+        var pythonGetStats = spawn("python3",["getstats.py", username]);
+        pythonGetStats.stdout.on('data', (data) => {
+            var stats = data.toString();
+            console.log(stats);
+            fs.readFile('stats.html', function(err, data){
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                var page = data.toString().replace('{{stats}}', stats)
+                res.write(page);
+                return res.end();
+            })
         })
     })
 })
@@ -42,13 +38,19 @@ app.get('/adduser', function (req, res) {
 app.get('/removeuser', function (req, res) {
     var username = req.query.username;
     console.log(username)
-    const pythonRemoveUser = spawn("python3",["removeuser.py", username]);
+    var pythonRemoveUser = spawn("python3",["removeuser.py", username]);
     pythonRemoveUser.stdout.on('data', (data) => {
         console.log(data.toString());
-        fs.readFile('stats.html', function(err, data){
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(data);
-            return res.end();
+        var pythonGetStats = spawn("python3",["getstats.py"]);
+        pythonGetStats.stdout.on('data', (data) => {
+            var stats = data.toString();
+            console.log(stats);
+            fs.readFile('stats.html', function(err, data){
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                var page = data.toString().replace('{{stats}}', stats)
+                res.write(page);
+                return res.end();
+            })
         })
     })
 })
