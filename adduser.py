@@ -26,8 +26,6 @@ def insert_user(username):
     # add user to database
     if(username in database.list_collection_names()):
         print(removeuser.remove_user(username))
-    else:
-        database[username]
     for repo in user.get_repos():
         if(repo.size > 0):
             total_commits = repo.get_commits().totalCount

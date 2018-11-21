@@ -4,7 +4,7 @@ import sys
 # init MongoDB API
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 database = client["github_database"]
-language_collection = database["languages"]
+language_collection = database["language_collection"]
 
 
 # define method for removing users and their repos from database
@@ -12,7 +12,6 @@ def remove_user(username):
     if(username not in database.collection_names()):
         return "unkown user"
     user_collection = database[username]
-    language_collection = database["language_collection"]
     for entry in user_collection.find():
         language_name = entry.get("name")
         total_repos = entry.get("total_repos")
