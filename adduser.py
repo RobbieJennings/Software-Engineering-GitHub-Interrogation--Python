@@ -14,7 +14,10 @@ language_collection = database["languages"]
 def insert_user(username):
     try:
         # init github API and retrieve user
-        g = github.Github("4986e75bbfff142ff1550dcbca813ba0d6d872e3")
+        access_file = open("accesstoken.txt", "r")
+        access_array = access_file.read().split("\n")
+        access_token = access_array[0]
+        g = github.Github(access_token)
         user = g.get_user(username)
     # catch connecection or unkown user exception
     except github.GithubException:
