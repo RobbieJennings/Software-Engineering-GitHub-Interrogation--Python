@@ -24,7 +24,21 @@
 </form>
 <script>
     var stats = {{stats}};
-    document.write(JSON.stringify(stats));
+    for(var i = 0; i < stats.length; i++) {
+      var language = stats[i];
+      var name = language.name;
+      var avgCommits = language.avg_commits;
+      var genericCommits = language.generic_commits;
+      var avgBranches = language.avg_branches;
+      var genericBranches = language.generic_branches;
+      var avgContributors = language.avg_contributors;
+      var genericContributors = language.generic_contributors;
+      var avgSize = language.avg_size;
+      var genericSize = language.generic_size;
+      document.write(name, " ", avgCommits, " ", genericCommits, " ",
+        avgBranches, " ", genericBranches, " ", avgContributors, " ",
+        genericContributors, " ", avgSize, " ", genericSize, "<br>");
+    }
 </script>
 </body>
 </html>
