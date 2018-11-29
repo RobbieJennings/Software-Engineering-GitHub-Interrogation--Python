@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+<script src = https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js></script>
+</head>
+
 <body>
 <p>
     Add/update a user to the database:
@@ -22,23 +26,69 @@
 <form action='/'>
   <input type="submit" value="reset">
 </form>
+
 <script>
     var stats = {{stats}};
+
     for(var i = 0; i < stats.length; i++) {
       var language = stats[i];
-      var name = language.name;
-      var avgCommits = language.avg_commits;
-      var genericCommits = language.generic_commits;
-      var avgBranches = language.avg_branches;
-      var genericBranches = language.generic_branches;
-      var avgContributors = language.avg_contributors;
-      var genericContributors = language.generic_contributors;
-      var avgSize = language.avg_size;
-      var genericSize = language.generic_size;
-      document.write(name, " ", avgCommits, " ", genericCommits, " ",
-        avgBranches, " ", genericBranches, " ", avgContributors, " ",
-        genericContributors, " ", avgSize, " ", genericSize, "<br>");
+
+      var myChart = document.createElement('canvas');
+      myChart.id = language.name;
+      myChart.width = 250;
+      myChart.height = 250;
+      document.body.appendChild(myChart);
+
+      var config = {
+  			type: 'pie',
+  			data: {
+  				datasets: [
+            {
+    					data: [language.avg_commits, language.generic_commits],
+    					backgroundColor: ['#42d4f4', '#4363d8'],
+    					label: 'Commits'
+            },
+            {
+    					data: [language.avg_branches, language.generic_branches],
+    					backgroundColor: ['#bfef45', '#3cb44b'],
+    					label: 'Branches'
+            },
+            {
+    					data: [language.avg_contributors, language.generic_contributors],
+    					backgroundColor: ['#e6194B', '#800000'],
+    					label: 'Contributors'
+            },
+            {
+    					data: [language.avg_size, language.generic_size],
+    					backgroundColor: ['#f58231', '#ffe119'],
+    					label: 'Size'
+  				  }
+          ],
+  				labels: ['User', 'Average']
+  			},
+  			options: {
+          title: {
+            display: true,
+            text: language.name
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            callbacks: {
+              title: function(tooltipItems, data) {
+                return data.datasets[tooltipItems[0].datasetIndex].label;
+              }
+      			}
+      		},
+  				responsive: false
+  			}
+  		};
+
+      var ctx = document.getElementById(language.name).getContext('2d');
+			window.myPie = new Chart(ctx, config);
     }
 </script>
+
 </body>
 </html>
