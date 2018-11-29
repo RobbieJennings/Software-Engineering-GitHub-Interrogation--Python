@@ -11,6 +11,7 @@ language_collection = database["language_collection"]
 # define method for returning relevant statistics as JSON
 def get_statistics(username):
     stats = []
+    max = [0, 0, 0, 0]
     user_collection = None
 
     if(username is not None and username in database.collection_names()):
@@ -28,6 +29,23 @@ def get_statistics(username):
             generic_branches = generic_stats.get("avg_branches")
             generic_contributors = generic_stats.get("avg_contributors")
             generic_size = generic_stats.get("avg_size")
+
+            if(avg_commits > max[0]):
+                max[0] = avg_commits
+            if(avg_branches > max[1]):
+                max[1] = avg_branches
+            if(avg_contributors > max[2]):
+                max[2] = avg_contributors
+            if(avg_size > max[3]):
+                max[3] = avg_size
+            if(generic_commits > max[0]):
+                max[0] = generic_commits
+            if(generic_branches > max[1]):
+                max[1] = generic_branches
+            if(generic_contributors > max[2]):
+                max[2] = generic_contributors
+            if(generic_size > max[3]):
+                max[3] = generic_size
 
             new_entry = {"name": name,
                          "avg_commits": avg_commits,
@@ -56,6 +74,15 @@ def get_statistics(username):
             generic_contributors = generic_stats.get("avg_contributors")
             generic_size = generic_stats.get("avg_size")
 
+            if(generic_commits > max[0]):
+                max[0] = generic_commits
+            if(generic_branches > max[1]):
+                max[1] = generic_branches
+            if(generic_contributors > max[2]):
+                max[2] = generic_contributors
+            if(generic_size > max[3]):
+                max[3] = generic_size
+
             new_entry = {"name": name,
                          "avg_commits": avg_commits,
                          "generic_commits": generic_commits,
@@ -67,7 +94,8 @@ def get_statistics(username):
                          "generic_size": generic_size}
             stats.append(new_entry)
 
-    return json.dumps(stats)
+    data = {"max": max, "stats": stats}
+    return json.dumps(data)
 
 
 if __name__ == "__main__":

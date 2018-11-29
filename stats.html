@@ -28,7 +28,9 @@
 </form>
 
 <script>
-    var stats = {{stats}};
+    var data = {{data}};
+    var max = data.max;
+    var stats = data.stats;
 
     for(var i = 0; i < stats.length; i++) {
       var language = stats[i];
