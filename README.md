@@ -20,11 +20,11 @@ node server.js in a terminal in the source folder.
 By default the homepage is displayed on localhost:8080. This page consists of a
 search bar which is used to add the first user to the database. When a user is added to the database, all of their repositories are checked and the data for each repository is used to update each language entry in the database.
 
-![Screenshot1](images/homepage.png)
+![Screenshot1](screenshots/homepage.png)
 
 From here, the user is brought to the stats page. This consists of another search
 bar to add a user to the database and a search bar to remove a user from the database. Also, there is a Reset button which reinitialises the database and returns the user to the home screen.
 
 Below this is a series of bar charts which display the average number of commits, branches, contributors and size of repositories containing each language in the database for the most recently entered user alongside the average for all users previously entered into the database.
 
-![Screenshot2](images/stats.png)
+![Screenshot2](screenshots/stats.png)
