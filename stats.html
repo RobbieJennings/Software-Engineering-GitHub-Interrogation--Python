@@ -37,36 +37,32 @@
 
       var myChart = document.createElement('canvas');
       myChart.id = language.name;
-      myChart.width = 250;
+      myChart.width = 500;
       myChart.height = 250;
       document.body.appendChild(myChart);
 
       var config = {
-  			type: 'pie',
+  			type: 'bar',
   			data: {
   				datasets: [
             {
-    					data: [language.avg_commits, language.generic_commits],
-    					backgroundColor: ['#42d4f4', '#4363d8'],
-    					label: 'Commits'
+    					data: [Math.round(language.avg_commits) / Math.round(max[0]),
+                    Math.round(language.avg_branches) / Math.round(max[1]),
+                    Math.round(language.avg_contributors) / Math.round(max[2]),
+                    Math.round(language.avg_size) / Math.round(max[3])],
+    					backgroundColor: ['rgba(255,0,0,1)', 'rgba(255,0,0,1)', 'rgba(255,0,0,1)', 'rgba(255,0,0,1)'],
+    					label: 'User'
             },
             {
-    					data: [language.avg_branches, language.generic_branches],
-    					backgroundColor: ['#bfef45', '#3cb44b'],
-    					label: 'Branches'
-            },
-            {
-    					data: [language.avg_contributors, language.generic_contributors],
-    					backgroundColor: ['#e6194B', '#800000'],
-    					label: 'Contributors'
-            },
-            {
-    					data: [language.avg_size, language.generic_size],
-    					backgroundColor: ['#f58231', '#ffe119'],
-    					label: 'Size'
-  				  }
+    					data: [Math.round(language.generic_commits) / Math.round(max[0]),
+                    Math.round(language.generic_branches) / Math.round(max[1]),
+                    Math.round(language.generic_contributors) / Math.round(max[2]),
+                    Math.round(language.generic_size) / Math.round(max[3])],
+    					backgroundColor: ['rgba(0,255,0,1)', 'rgba(0,255,0,1)', 'rgba(0,255,0,1)', 'rgba(0,255,0,1)'],
+    					label: 'Average'
+            }
           ],
-  				labels: ['User', 'Average']
+  				labels: ['Commits', 'Branches','Contributors', 'Size']
   			},
   			options: {
           title: {
@@ -80,9 +76,24 @@
             callbacks: {
               title: function(tooltipItems, data) {
                 return data.datasets[tooltipItems[0].datasetIndex].label;
+              },
+              label: function(tooltipItems, data) {
+                var value = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+                var maxValue = Math.round(max[tooltipItems.index]);
+                return Math.round(value * maxValue);
               }
       			}
       		},
+          scales: {
+            yAxes: [{
+              type: 'linear',
+              display: false,
+              ticks: {
+                max: 1,
+                min: 0
+              }
+            }]
+          },
   				responsive: false
   			}
   		};

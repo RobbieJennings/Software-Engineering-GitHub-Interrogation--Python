@@ -47,7 +47,7 @@ app.get('/removeuser', function (req, res) {
             console.log(stats);
             fs.readFile('stats.html', function(err, data){
                 res.writeHead(200, {'Content-Type': 'text/html'});
-                var page = data.toString().replace('{{stats}}', stats)
+                var page = data.toString().replace('{{data}}', stats)
                 res.write(page);
                 return res.end();
             })
